@@ -1,6 +1,9 @@
 package main
 
-import "log"
+import (
+	"log"
+	"sync"
+)
 
 type Hub struct {
 	// Registered clients
@@ -11,6 +14,8 @@ type Hub struct {
 	register chan *Client
 	//Unregister requests from clients
 	unregister chan *Client 
+	// used during unregistering clients, to avoid race when multiple client is unregistering
+	mux sync.Mutex
 
 }
 
@@ -37,6 +42,7 @@ func (h *Hub) run() {
 			if _, ok := h.clients[client]; ok {
 				delete(h.clients, client)
 				close(client.send)
+				log.Println("Client removed from the hub")
 			}
 		case message := <- h.broadcast:
 			log.Println("Sending message to all of its clients")
@@ -50,4 +56,10 @@ func (h *Hub) run() {
 			}
 		}
 	}
+}
+
+func (h *Hub) unregisterClient(client *Client) {
+	h.mux.Lock()
+	h.unregister <- client
+	h.mux.Unlock()
 }

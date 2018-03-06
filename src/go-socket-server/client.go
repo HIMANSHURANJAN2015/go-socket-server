@@ -38,8 +38,12 @@ type Client struct {
 func (c *Client) writePump() {
 	ticker := time.NewTicker(pingPeriod)
 	defer func() {
+		log.Println("Length of hub clients before",len(c.hub.clients))
 		ticker.Stop()
 		c.conn.Close()
+		// unregistering the client from the hub
+		c.hub.unregisterClient(c)
+		log.Println("Length of hub clients after",len(c.hub.clients))
 	}()
 	for {
 		select {
@@ -62,10 +66,10 @@ func (c *Client) writePump() {
 			}
 		case <- ticker.C:
 			// Checking if connection is alive
-			log.Println("closing connection of client1")
+			log.Println("Checking connectivity of client")
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
 			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
-				log.Println("closing connection of client")
+				log.Println("closing connection of this client")
 				return
 			}	
 		}
