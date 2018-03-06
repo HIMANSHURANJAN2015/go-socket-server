@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My web socket</title>	
+</head>
+ <body>
+        <pre id="fileData"></pre>
+        <button type='button'>Notify Me</button>
+        <script type="text/javascript">
+            (function() {
+                var data = document.getElementById("fileData");
+                var conn = new WebSocket("ws://localhost:8083/ws/store?storeId=1");
+                //var conn = new WebSocket("ws://localhost:8083/store?storeId=21");
+                console.log(conn)
+                conn.onclose = function(evt) {
+                    console.log(evt,"dsddda");
+                    data.textContent = 'Connection closed';
+                }
+                conn.onmessage = function(evt) {
+                    console.log('file updated');
+                    data.textContent = evt.data;
+			        notifyMe(evt.data);
+                }
+			function notifyMe(message) {
+                    console.log(message);
+                    message = JSON.parse(message);
+                    message = "Order Received #" + message.referenceNumber;
+                    console.log(message);
+				  if (!("Notification" in window)) {
+				    alert("This browser does not support desktop notification");
+				  }
+				  else if (Notification.permission === "granted") {
+				    var notification = new Notification(message);
+				  }
+				  else if (Notification.permission !== "denied") {
+				    Notification.requestPermission(function (permission) {
+				      if (permission === "granted") {
+				        var notification = new Notification(message);
+				      }
+				    });
+				  }
+            }
+            		
+            })();
+        </script>
+    </body>
+</html>
