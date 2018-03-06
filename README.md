@@ -1,6 +1,6 @@
 # go-socket-server
 Implements a socket server in GOLANG using gorilla library of websocket. This socket listens to events published by Gcloud pub-sub
-1) Client :- 1 socket connection
+1) Client :- Represents 1 socket connection. If the client goes offline/closes connection (eg:- closing tab/browser) then the connection will be closed after 54sec, through PING mechanism and subsequently removed from the hub. _Each tab is considered a different client_.
 2) Hub :- Collection of many clients which have same property eg:- (All clients which wants to listen to events from store-1 etc)
 	Hub is identified by name like store-1, store-24 etc
 3) HubMap :- It is basically list of all hubs. There will be 1 hubMap for an application. This hubMap listens to all events from gcloud pubsub.
