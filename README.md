@@ -28,6 +28,7 @@ Note that GOPATH point to a folder which have the structure like it contains 3 f
 	* cd $GOPATH
 	* go get -u cloud.google.com/go/pubsub
 	* go get -u golang.org/x/net/context
+	* go get -u github.com/gorilla/websocket
 
 This will install the packages in pkg directory of our $GOPATH folder	
 	
