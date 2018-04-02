@@ -44,7 +44,7 @@ Compiling and Running
 
 Setting Up GCLOUD EMULATOR
 ---------------------------
-1) Setup emulator by following [https://cloud.google.com/pubsub/docs/emulator](this)
+1) Setup emulator by following [https://cloud.google.com/pubsub/docs/emulator]
 2) For testing, point your PUBSUB_EMULATOR_HOST locally. See subscriber.go file
 
 Running test cases
