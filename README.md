@@ -16,20 +16,21 @@ As of now, this listens to only "_order-status_" event of cloud pubsub. but it c
 Setup
 -----------
 
-1) clone the repository
-2) install go and set GOPATH to point to the cloned repository (go-socket-server)
-	* vim ~/.bashrc . Go to the end of the file and add/update the following line
-	* export GOPATH=/home/<name>/Desktop/go-socket-server     (go-socket-server is our repo.)
-	* source ~/bashrc
+1) Install Go and setup GOPATH environment variables. Also append $GOPATH/bin to $PATH variable 
 
-Note that GOPATH point to a folder which have the structure like it contains 3 folders. - bin, pkg and src
+   eg:- 
+   * a sample gopath is /home/zopnow/Desktop/go-workspace
+   * go-workspace folder has following directories - bin, pkg, projects and src. bin,pkg and src follows sematics of workspace as defined by GO.
+   * __Projects folder has all our different repositories of go projects__ . 
+2) Clone the repository inside /home/zopnow/Desktop/go-workspace/projects. (You may choose any other directory as well) The important point to remember is that go will fetch executables and libraries	from go path.
+
 
 3) Install dependent packages.
 	* cd $GOPATH
 	* go get -u cloud.google.com/go/pubsub
 	* go get -u golang.org/x/net/context
 	* go get -u github.com/gorilla/websocket
-
+	     
 This will install the packages in pkg directory of our $GOPATH folder	
 	
 
@@ -41,6 +42,10 @@ Compiling and Running
 	* go install. It will install this executable file in $GOPATH/bin
 2) to run ./go-socket-server
 
+Setting Up GCLOUD EMULATOR
+---------------------------
+1) Setup emulator by following [https://cloud.google.com/pubsub/docs/emulator](this)
+2) For testing, point your PUBSUB_EMULATOR_HOST locally. See subscriber.go file
 
 Running test cases
 -----------------------
